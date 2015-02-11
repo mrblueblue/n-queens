@@ -104,12 +104,38 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var col = [];
+      var self = this;
+
+      _.each(self.rows(), function(row){
+        col.push(row[colIndex]);
+      });
+
+      var numPieces = _.filter(col, function(val) {
+        return val === 1;
+      }).length;
+
+      return numPieces > 1;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var cols = [];
+      var self = this;
+
+      _.each(self.rows(), function(row, index){
+        _.each(row, function(item, colIndex){
+          if(index === 0){
+            cols.push([item]);
+          } else {
+            cols[colIndex].push(item);
+          }
+        });
+      });
+
+      return !!_.some(cols, function(col, index){
+        return self.hasColConflictAt(index) === true;
+      });
     },
 
 
