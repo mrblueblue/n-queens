@@ -120,37 +120,42 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      var cols = [];
+
       var self = this;
 
-      _.each(self.rows(), function(row, index){
-        _.each(row, function(item, colIndex){
-          if(index === 0){
-            cols.push([item]);
-          } else {
-            cols[colIndex].push(item);
-          }
-        });
-      });
-
-      return !!_.some(cols, function(col, index){
+      return !!_.some(this.get(0), function(row, index){
         return self.hasColConflictAt(index) === true;
       });
     },
-
-
 
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+
+      var diag = [];
+
+      _.each(this.rows(), function(row, index){
+        if (majorDiagonalColumnIndexAtFirstRow + index < row.length){
+          diag.push(row[majorDiagonalColumnIndexAtFirstRow + index]);
+        }
+      });
+
+      var hasConflict = _.filter(diag, function(value){
+        return value === 1;
+      }).length > 1;
+
+      return hasConflict; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var self = this;
+
+      return !!_.some(this.rows()[0], function(row, index){
+        return self.hasMajorDiagonalConflictAt(index) === true;
+      });
     },
 
 
