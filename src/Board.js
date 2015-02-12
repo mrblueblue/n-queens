@@ -168,7 +168,8 @@
       var diag = [];
 
       _.each(this.rows(), function(row, index){
-        if (minorDiagonalColumnIndexAtFirstRow - index >= 0){
+        if (minorDiagonalColumnIndexAtFirstRow - index >= 0 &&
+            minorDiagonalColumnIndexAtFirstRow - index < row.length){
           diag.push(row[minorDiagonalColumnIndexAtFirstRow - index]);
         }
       });
